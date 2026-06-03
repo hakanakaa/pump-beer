@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 8080;
 const RPC_URL = process.env.SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com";
 const connection = new Connection(RPC_URL, "confirmed");
 
-let MINT_ADDRESS = process.env.MINT_ADDRESS || "ComingSoon";
+let MINT_ADDRESS = process.env.MINT_ADDRESS || "2Sabda8LaABGNRLP53FyFBh682sEveaqocyJWZBApump";
 const PARTNER_ADDRESS = process.env.PARTNER_ADDRESS || "2HVQ3TWUyhgnpdmeEJnds5HsRuY5YbfGxUENmKnWaiCt";
 
 const REWARDS = [
