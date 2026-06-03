@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pump.beer — Live Automatic Beer Money Draws 🍻</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <!-- Comic/Pop-Art Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Lilita+One&family=Space+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Announcement Marquee (Infinite Sliding Text) -->
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            <span>🍻 THE TRENCHES ARE HARSH... EVERYONE DESERVES A BEER MONEY! 🍻</span>
+            <span>🔥 NO TAXES, NO TEAM ALLOCATION, JUST $BEER! 🔥</span>
+            <span>💎 CREATOR REWARDS SWEEP LIVE TO TOKEN HOLDERS! 💎</span>
+            <span>🍺 KEEP THE TAPS FLOWING! AUTO-SPINNING EVERY FEW SECONDS! 🍺</span>
+            <span>🍻 THE TRENCHES ARE HARSH... EVERYONE DESERVES A BEER MONEY! 🍻</span>
+            <span>🔥 NO TAXES, NO TEAM ALLOCATION, JUST $BEER! 🔥</span>
+            <span>💎 CREATOR REWARDS SWEEP LIVE TO TOKEN HOLDERS! 💎</span>
+            <span>🍺 KEEP THE TAPS FLOWING! AUTO-SPINNING EVERY FEW SECONDS! 🍺</span>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <img src="logo.png" alt="Pump.beer Logo" class="beer-logo-img">
+                <span class="logo-text">PUMP<span class="logo-accent">.BEER</span></span>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="nav-stats font-mono">
+                <div class="stat-item">
+                    <span class="stat-lbl">REWARDABLE AMOUNT:</span>
+                    <span id="stat-rewardable-amount" class="stat-val text-green">15.80 SOL</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-lbl">TOTAL POURED:</span>
+                    <span id="stat-total-poured" class="stat-val text-gold">425.80 SOL</span>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="nav-actions">
+                <button id="btn-sound-toggle" class="btn btn-secondary btn-icon" title="Toggle Sound">
+                    <span id="sound-icon">🔊</span>
+                </button>
+                <button id="btn-copy-ca-nav" class="btn btn-primary font-mono btn-ca-copy">
+                    CA: Coming Soon 📋
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="content-wrapper">
+        
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="hero-grid">
+                <div class="hero-left">
+                    <div class="comic-badge">AUTO REWARDS LIVE!</div>
+                    <h1 class="hero-title">EVERYONE DESERVES A <span class="text-underline">BEER MONEY!</span></h1>
+                    <p class="hero-subtitle">
+                        The trenches are dry, the charts are bleeding, and your wallet is crying. We get it. 
+                        That's why <strong>Pump.beer</strong> sweeps creator rewards and automatically distributes them to random $BEER holders live! Every draw, the tap pours free SOL straight to a lucky holder. Buy, hold, and watch the cash flow!
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="https://pump.fun/coin/ComingSoon" target="_blank" class="btn btn-primary btn-large">BUY $BEER</a>
+                        <a href="#spinner-section" class="btn btn-secondary btn-large">WATCH DRAWS</a>
+                    </div>
+                </div>
+                <div class="hero-right">
+                    <!-- Giant Interactive PNG Beer Mug -->
+                    <div class="giant-beer-container">
+                        <img src="logo.png" alt="Cheers Mug" class="giant-beer-mug">
+                        <div class="mug-badge">CLICK TO CHEERS! 🍻</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIQUID WHITE FOAM DRIP DIVIDER -->
+        <div class="foam-drip-divider">
+            <svg viewBox="0 -10 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Seamless Drip Fill (No Stroke) -->
+                <path d="M-5,-25 H1445 V50 C1405,50 1390,110 1370,110 C1350,110 1340,50 1300,50 C1270,50 1260,85 1245,85 C1230,85 1220,50 1180,50 C1130,50 1120,120 1095,120 C1070,120 1060,50 1020,50 C980,50 970,95 950,95 C930,95 920,50 880,50 C830,50 820,115 795,115 C770,115 760,50 720,50 C680,50 670,100 650,100 C630,100 620,50 580,50 C540,50 530,90 515,90 C500,90 490,50 450,50 C400,50 390,125 365,125 C340,125 330,50 290,50 C250,50 240,95 220,95 C200,95 190,50 150,50 C100,50 90,110 65,110 C40,110 30,50 -5,50 Z" fill="#FFFDF0"/>
+                <!-- Seamless Drip Bottom Outline -->
+                <path d="M1445,50 C1405,50 1390,110 1370,110 C1350,110 1340,50 1300,50 C1270,50 1260,85 1245,85 C1230,85 1220,50 1180,50 C1130,50 1120,120 1095,120 C1070,120 1060,50 1020,50 C980,50 970,95 950,95 C930,95 920,50 880,50 C830,50 820,115 795,115 C770,115 760,50 720,50 C680,50 670,100 650,100 C630,100 620,50 580,50 C540,50 530,90 515,90 C500,90 490,50 450,50 C400,50 390,125 365,125 C340,125 330,50 290,50 C250,50 240,95 220,95 C200,95 190,50 150,50 C100,50 90,110 65,110 C40,110 30,50 -5,50" fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <!-- SPINNER SECTION -->
+        <section id="spinner-section" class="game-section">
+            <div class="section-container">
+                <div class="pop-art-title-wrap">
+                    <h2 class="section-title">LIVE BEER DROPS</h2>
+                    <p class="section-subtitle">Buy and hold $BEER to receive beer money automatically.</p>
+                </div>
+
+                <div class="spinner-main-card">
+                    <!-- Game Header / Wallet Info -->
+                    <div class="game-header">
+                        <div class="spin-counter-badge" id="spin-status-badge">
+                            STATUS: SELECTING NEXT HOLDER...
+                        </div>
+                        <div class="wallet-status-tag font-mono">
+                            REWARDABLE AMOUNT: <span id="rewardable-amount-display" class="text-green">15.80 SOL</span>
+                        </div>
+                    </div>
+
+                    <!-- CS:GO Spinner Frame -->
+                    <div class="csgo-spinner-frame">
+                        <div class="ticker-line"></div>
+                        <div class="spinner-window">
+                            <div id="spinner-track" class="spinner-track">
+                                <!-- Cards will be loaded dynamically by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Control Panel (Progress & Auto Status Indicator) -->
+                    <div class="spinner-status-console font-mono">
+                        <div class="console-progress-track">
+                            <div id="console-progress-bar" class="console-progress-fill"></div>
+                        </div>
+                        <div class="console-message" id="console-status-text">Next draw will begin shortly...</div>
+                    </div>
+
+                    <p class="claim-disclaimer font-mono">
+                        * Distribution is fully automatic. Smart contracts sweep pump.fun fees and disperse SOL rebates to active $BEER token holders.
+                    </p>
+                </div>
+
+                <!-- Simulation Feed / Activity Log -->
+                <div class="activity-log-card">
+                    <h3 class="log-title font-mono">🍺 RECENT WINNERS ON THE TAPS:</h3>
+                    <div id="activity-scroll-list" class="activity-list font-mono">
+                        <!-- Dynamic updates mimicking real transactions -->
+                        <div class="activity-item"><span class="winner-addr">0x7F...89A</span> poured a pint and won <span class="winner-reward win-common">0.05 SOL</span>! <span class="time-ago">2s ago</span></div>
+                        <div class="activity-item"><span class="winner-addr">0xBeer...Degen</span> poured a pint and won <span class="winner-reward win-rare">1.00 SOL</span>! <span class="time-ago">14s ago</span></div>
+                        <div class="activity-item"><span class="winner-addr">0x12...BCd</span> poured a pint and won <span class="winner-reward win-uncommon">0.10 SOL</span>! <span class="time-ago">1m ago</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIQUID GOLD BEER DRIP DIVIDER -->
+        <div class="beer-drip-divider">
+            <svg viewBox="0 -10 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Seamless Drip Fill (No Stroke, White background because spinner is white) -->
+                <path d="M-5,-25 H1445 V50 C1405,50 1390,110 1370,110 C1350,110 1340,50 1300,50 C1270,50 1260,85 1245,85 C1230,85 1220,50 1180,50 C1130,50 1120,120 1095,120 C1070,120 1060,50 1020,50 C980,50 970,95 950,95 C930,95 920,50 880,50 C830,50 820,115 795,115 C770,115 760,50 720,50 C680,50 670,100 650,100 C630,100 620,50 580,50 C540,50 530,90 515,90 C500,90 490,50 450,50 C400,50 390,125 365,125 C340,125 330,50 290,50 C250,50 240,95 220,95 C200,95 190,50 150,50 C100,50 90,110 65,110 C40,110 30,50 -5,50 Z" fill="#FFFFFF"/>
+                <!-- Seamless Drip Bottom Outline -->
+                <path d="M1445,50 C1405,50 1390,110 1370,110 C1350,110 1340,50 1300,50 C1270,50 1260,85 1245,85 C1230,85 1220,50 1180,50 C1130,50 1120,120 1095,120 C1070,120 1060,50 1020,50 C980,50 970,95 950,95 C930,95 920,50 880,50 C830,50 820,115 795,115 C770,115 760,50 720,50 C680,50 670,100 650,100 C630,100 620,50 580,50 C540,50 530,90 515,90 C500,90 490,50 450,50 C400,50 390,125 365,125 C340,125 330,50 290,50 C250,50 240,95 220,95 C200,95 190,50 150,50 C100,50 90,110 65,110 C40,110 30,50 -5,50" fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <!-- TOKENOMICS SECTION -->
+        <section class="tokenomics-section">
+            <div class="section-container">
+                <div class="pop-art-title-wrap">
+                    <h2 class="section-title text-white">BEER-NOMICS</h2>
+                    <p class="section-subtitle text-cream">Exactly like pump.fun, but dripping in gold foam. No special taxes, no secrets.</p>
+                </div>
+
+                <div class="tokenomics-grid">
+                    <!-- Supply Card -->
+                    <div class="crate-card">
+                        <div class="crate-icon">🍺</div>
+                        <h3 class="crate-title">1B SUPPLY</h3>
+                    </div>
+
+                    <!-- Fair Launch Card -->
+                    <div class="crate-card">
+                        <div class="crate-icon">⚖️</div>
+                        <h3 class="crate-title">100% FAIR</h3>
+                    </div>
+
+                    <!-- Safety Card -->
+                    <div class="crate-card">
+                        <div class="crate-icon">🔥</div>
+                        <h3 class="crate-title">BURNED LP</h3>
+                    </div>
+
+                    <!-- Dev Card -->
+                    <div class="crate-card">
+                        <div class="crate-icon">🥴</div>
+                        <h3 class="crate-title">DEV IS DRUNK</h3>
+                    </div>
+                </div>
+
+                <!-- Custom Comic-strip How It Works -->
+                <div class="comic-strip-container">
+                    <h3 class="strip-header font-mono">HOW TO EARN BEER MONEY IN 3 STEPS:</h3>
+                    <div class="comic-strip">
+                        <div class="strip-panel">
+                            <div class="panel-num">1</div>
+                            <h4 class="panel-heading">FILL YOUR GLASS</h4>
+                            <p class="panel-text">Buy and hold $BEER tokens in your wallet. Holder snapshots are taken automatically.</p>
+                        </div>
+                        <div class="strip-arrow">➔</div>
+                        <div class="strip-panel">
+                            <div class="panel-num">2</div>
+                            <h4 class="panel-heading">LIVE DRAW</h4>
+                            <p class="panel-text">The system automatically sweeps creator fees, loads random holders, and spins the tap.</p>
+                        </div>
+                        <div class="strip-arrow">➔</div>
+                        <div class="strip-panel">
+                            <div class="panel-num">3</div>
+                            <h4 class="panel-heading">SOL DISBURSED</h4>
+                            <p class="panel-text">Winning address receives the SOL rebate directly. No manual claims required!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <h2 class="footer-bold-text">EVERYONE DESERVES A BEER MONEY.</h2>
+            <p class="footer-copy text-mono">
+                The trenches are harsh, the rug pulls are frequent, and the red candles are burning. 
+                But in our pub, the beer is cold, the spins are fair, and the rebates are real. Grab a pint, sit down, and let's pump $BEER.
+            </p>
+            
+            <!-- Social Links -->
+            <div class="social-links">
+                <a href="https://x.com" target="_blank" class="social-btn x-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    <span>TWITTER / X</span>
+                </a>
+                <a href="https://pump.fun/coin/ComingSoon" target="_blank" class="social-btn pump-btn">
+                    <span class="btn-emoji">💊</span>
+                    <span>PUMPFUN</span>
+                </a>
+            </div>
+
+            <div class="footer-bottom font-mono">
+                <p>© 2026 Pump.beer • Built for the degenerate working class. Dev is not responsible for hangovers or red charts.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST ALERTS CONTAINER -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Script Entry -->
+    <script src="app.js"></script>
+</body>
+</html>

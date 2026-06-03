@@ -1,0 +1,16 @@
+{
+  "name": "pump-beer",
+  "version": "1.0.0",
+  "description": "Pump.beer Serverless Vercel Build",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.3",
+    "@vercel/kv": "^3.0.0",
+    "bs58": "^6.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "author": "Antigravity",
+  "license": "ISC"
+}
