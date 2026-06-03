@@ -574,6 +574,11 @@ function startVercelEngine() {
     showToast("Connected to live drawing feed!", "success");
     pollState();
     setInterval(pollState, 3000); // Fetch state every 3 seconds
+    
+    // Crowdsourced Cron Execution: The frontend pings the cron endpoint every 60s
+    // The backend uses a KV lock to ensure it only actually runs once a minute regardless of how many users ping it
+    setInterval(() => { fetch('/api/cron').catch(e => console.error(e)); }, 60000);
+    setTimeout(() => { fetch('/api/cron').catch(e => console.error(e)); }, 5000); // Initial ping
 }
 
 // --- Event Listeners ---

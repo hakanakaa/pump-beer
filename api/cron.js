@@ -7,6 +7,14 @@ module.exports = async (req, res) => {
     //    return res.status(401).end('Unauthorized');
     // }
 
+    // --- 0. DEBOUNCE LOCK (For frontend triggering) ---
+    const db = await loadDb();
+    if (db.lastCronTime && Date.now() - db.lastCronTime < 50000) {
+        return res.status(200).json({ success: true, message: "Cron already executed recently" });
+    }
+    db.lastCronTime = Date.now();
+    await saveDb(db);
+
     let claimedSol = 0;
     
     // --- 1. FETCH HOLDERS ---
