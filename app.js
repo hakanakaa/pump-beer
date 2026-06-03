@@ -271,9 +271,19 @@ function initSpinnerTrack(winningHolder = null, winningPrize = null) {
         
         const card = document.createElement('div');
         card.className = `reel-item tier-${prize.rarity}`;
+        
+        // Count number of emoji characters (dealing with emoji surrogate pairs properly)
+        const emojiCount = [...prize.emoji].length;
+        let emojiClass = "reel-item-emoji";
+        if (emojiCount >= 6) {
+            emojiClass += " emoji-long";
+        } else if (emojiCount >= 4) {
+            emojiClass += " emoji-medium";
+        }
+
         card.innerHTML = `
             <div class="reel-item-address">${holder.name}</div>
-            <div class="reel-item-emoji">${prize.emoji}</div>
+            <div class="${emojiClass}">${prize.emoji}</div>
             <div class="reel-item-reward">${prize.valueText}</div>
         `;
         

@@ -365,6 +365,7 @@ async function autoClaimFees() {
     } catch (e) {}
 }
 
+app.get('/favicon.ico', (req, res) => res.sendFile(path.join(__dirname, 'logo.png')));
 app.use(express.static(path.join(__dirname, './')));
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, './index.html')));
 

@@ -658,6 +658,16 @@ a {
     margin-bottom: 2px;
 }
 
+.reel-item-emoji.emoji-medium {
+    font-size: 1.35rem;
+    letter-spacing: -2px;
+}
+
+.reel-item-emoji.emoji-long {
+    font-size: 1.05rem;
+    letter-spacing: -4px;
+}
+
 .reel-item-reward {
     font-family: 'Lilita One', sans-serif;
     font-size: 1.1rem;
@@ -1302,6 +1312,11 @@ a {
     .spinner-track {
         height: 120px;
         top: 10px;
+    }
+    
+    .reel-item {
+        height: 120px;
+        padding: 6px;
     }
     
     .footer-bold-text {
