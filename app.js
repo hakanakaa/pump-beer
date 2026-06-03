@@ -404,39 +404,80 @@ function rebuildActivityLog(winners) {
     });
 }
 
-// --- Vercel Local Animation Sequence ---
-function triggerLocalSpin(winner, prize) {
-    if (isSpinning) return;
-    isSpinning = true;
-    
-    currentWinner = winner;
-    currentPrize = prize;
+// Sync current loop state
+function syncState(state) {
+    loopState = state.loopState;
+    currentWinner = state.currentWinner;
+    currentPrize = state.currentPrize;
+    lastTxHash = state.txHash;
 
-    // Visual preparation
-    document.querySelector('.spinner-status-console').classList.remove('console-win-active');
-    spinStatusBadge.textContent = "STATUS: SPINNING TAP...";
-    spinStatusBadge.style.backgroundColor = "#10B981";
-    consoleStatusText.textContent = "STATUS: POURING COLD REBATE...";
-    consoleProgressBar.style.width = "100%";
-    consoleProgressBar.style.transition = "none";
-    
-    initSpinnerTrack(currentWinner, currentPrize);
-    
-    const winningIndex = 30;
-    const frameWidth = document.querySelector('.csgo-spinner-frame').offsetWidth;
-    const targetCardPosition = (winningIndex * CARD_OUTER) + (CARD_WIDTH / 2);
-    const windowCenter = frameWidth / 2;
-    const scrollAmount = targetCardPosition - windowCenter;
-    const randomWiggle = (Math.random() - 0.5) * 45;
-    const finalTranslation = -(scrollAmount + randomWiggle);
-    
-    sounds.playSpinLaunch();
-    
-    setTimeout(() => {
-        spinnerTrack.style.transition = 'transform 0.8s cubic-bezier(0.1, 0.8, 0.2, 1.0)';
+    if (loopState === "COOLDOWN") {
+        isSpinning = false;
+        document.querySelector('.spinner-status-console').classList.remove('console-win-active');
+        
+        spinStatusBadge.textContent = "STATUS: SELECTING NEXT HOLDER...";
+        spinStatusBadge.style.backgroundColor = "#F9A826";
+        
+        initSpinnerTrack();
+        updateCountdown(state.countdownRemaining);
+    } else if (loopState === "SPINNING") {
+        if (!isSpinning) {
+            isSpinning = true;
+            spinStatusBadge.textContent = "STATUS: SPINNING TAP...";
+            spinStatusBadge.style.backgroundColor = "#10B981";
+            consoleStatusText.textContent = "STATUS: POURING COLD REBATE...";
+            consoleProgressBar.style.width = "100%";
+            consoleProgressBar.style.transition = "none";
+            
+            initSpinnerTrack(currentWinner, currentPrize);
+            
+            const winningIndex = 30;
+            const frameWidth = document.querySelector('.csgo-spinner-frame').offsetWidth;
+            const targetCardPosition = (winningIndex * CARD_OUTER) + (CARD_WIDTH / 2);
+            const windowCenter = frameWidth / 2;
+            const scrollAmount = targetCardPosition - windowCenter;
+            const randomWiggle = (Math.random() - 0.5) * 45;
+            const finalTranslation = -(scrollAmount + randomWiggle);
+            
+            sounds.playSpinLaunch();
+            
+            setTimeout(() => {
+                spinnerTrack.style.transition = 'transform 0.8s cubic-bezier(0.1, 0.8, 0.2, 1.0)';
+                spinnerTrack.style.transform = `translateX(${finalTranslation}px)`;
+                trackFastTicks(finalTranslation);
+            }, 50);
+        }
+    } else if (loopState === "WINNER") {
+        isSpinning = false;
+        
+        initSpinnerTrack(currentWinner, currentPrize);
+        const winningIndex = 30;
+        const frameWidth = document.querySelector('.csgo-spinner-frame').offsetWidth;
+        const targetCardPosition = (winningIndex * CARD_OUTER) + (CARD_WIDTH / 2);
+        const windowCenter = frameWidth / 2;
+        const finalTranslation = -(targetCardPosition - windowCenter);
+        
+        spinnerTrack.style.transition = 'none';
         spinnerTrack.style.transform = `translateX(${finalTranslation}px)`;
-        trackFastTicks(finalTranslation);
-    }, 50);
+        
+        const cards = spinnerTrack.querySelectorAll('.reel-item');
+        if (cards[30]) {
+            cards[30].classList.add('winning-card-highlight');
+        }
+        
+        if (lastTxHash) {
+            revealWinner(lastTxHash);
+        }
+    } else if (loopState === "PAUSED") {
+        isSpinning = false;
+        document.querySelector('.spinner-status-console').classList.remove('console-win-active');
+        spinStatusBadge.textContent = "STATUS: PAUSED (REPLENISHING...)";
+        spinStatusBadge.style.backgroundColor = "#6B7280";
+        consoleProgressBar.style.width = "0%";
+        consoleProgressBar.style.transition = "none";
+        consoleStatusText.textContent = "Waiting for creator rewards to claim...";
+        initSpinnerTrack();
+    }
 }
 
 // Update countdown progress bar
@@ -504,81 +545,68 @@ function spawnCheersEffects() {
     }
 }
 
-// --- HTTP Polling Engine (Vercel Serverless) ---
-let localLastDrawTime = 0;
-let isPolling = false;
-let drawTriggerPending = false;
+// --- WebSocket Connection ---
+const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+const wsUrl = wsProtocol + window.location.host;
+let ws;
 
-async function pollState() {
-    if (isPolling) return;
-    isPolling = true;
-    try {
-        const res = await fetch('/api/state');
-        if (res.ok) {
-            const data = await res.json();
-            
-            syncCA(data.ca);
-            updateStats({
-                vaultPool: data.vaultPool,
-                totalPoured: data.totalPoured,
-                recentWinners: data.recentWinners
-            });
-
-            if (localLastDrawTime === 0 && data.lastDrawTime > 0) {
-                localLastDrawTime = data.lastDrawTime; // Initialize
-            }
-
-            // Detect new draw!
-            if (data.lastDrawTime > localLastDrawTime && data.lastWinner && data.lastPrize) {
-                localLastDrawTime = data.lastDrawTime;
-                
-                if (data.recentWinners && data.recentWinners.length > 0) {
-                    lastTxHash = data.recentWinners[0].txHash;
-                }
-                
-                triggerLocalSpin(data.lastWinner, data.lastPrize);
-            } 
-            // If we are idle, pool is full, and not already spinning, try to trigger a draw
-            else if (!isSpinning && data.vaultPool >= 0.15 && Date.now() - data.lastDrawTime > 15000 && !drawTriggerPending) {
-                spinStatusBadge.textContent = "STATUS: SELECTING NEXT HOLDER...";
-                spinStatusBadge.style.backgroundColor = "#F9A826";
-                consoleStatusText.textContent = "Next automatic draw initiating...";
-                triggerDrawRequest();
-            } else if (!isSpinning && data.vaultPool < 0.15) {
-                spinStatusBadge.textContent = "STATUS: PAUSED (REPLENISHING...)";
-                spinStatusBadge.style.backgroundColor = "#6B7280";
-                consoleProgressBar.style.width = "0%";
-                consoleStatusText.textContent = "Waiting for creator rewards to claim...";
-            }
-        }
-    } catch (e) {
-        console.error("Polling error:", e);
-    } finally {
-        isPolling = false;
-    }
-}
-
-async function triggerDrawRequest() {
-    drawTriggerPending = true;
-    try {
-        await fetch('/api/trigger-draw', { method: 'POST' });
-        // The result will be picked up by the next poll cycle naturally
-    } catch (e) {
-        console.error("Failed to trigger draw:", e);
-    } finally {
-        setTimeout(() => { drawTriggerPending = false; }, 5000); // Prevent spamming
-    }
-}
-
-function startVercelEngine() {
-    showToast("Connected to live drawing feed!", "success");
-    pollState();
-    setInterval(pollState, 3000); // Fetch state every 3 seconds
+function connectWs() {
+    ws = new WebSocket(wsUrl);
     
-    // Crowdsourced Cron Execution: The frontend pings the cron endpoint every 60s
-    // The backend uses a KV lock to ensure it only actually runs once a minute regardless of how many users ping it
-    setInterval(() => { fetch('/api/cron').catch(e => console.error(e)); }, 60000);
-    setTimeout(() => { fetch('/api/cron').catch(e => console.error(e)); }, 5000); // Initial ping
+    ws.onopen = () => {
+        console.log("WebSocket connected to Pump.beer live feed!");
+        showToast("Connected to live drawing feed!", "success");
+    };
+    
+    ws.onmessage = (event) => {
+        try {
+            const packet = JSON.parse(event.data);
+            const { type, data } = packet;
+            
+            switch (type) {
+                case "INITIAL_STATE":
+                    syncCA(data.ca);
+                    updateStats(data.stats);
+                    syncState(data.state);
+                    break;
+                case "COUNTDOWN_TICK":
+                    updateCountdown(data.countdownRemaining);
+                    break;
+                case "STATE_CHANGE":
+                    syncState(data);
+                    break;
+                case "SPIN_COMPLETE":
+                    updateStats(data.stats);
+                    lastTxHash = data.state.txHash;
+                    if (!isSpinning) {
+                        revealWinner(lastTxHash);
+                    }
+                    break;
+                case "STATS_UPDATE":
+                    updateStats(data.stats);
+                    break;
+                case "CA_UPDATE":
+                    syncCA(data.ca);
+                    showToast("Contract Address updated live!", "success");
+                    break;
+                case "TOAST":
+                    showToast(data.message, data.type);
+                    break;
+            }
+        } catch (e) {
+            console.error("Failed to parse WebSocket message:", e);
+        }
+    };
+    
+    ws.onclose = () => {
+        console.warn("WebSocket disconnected. Retrying in 3 seconds...");
+        showToast("Live feed disconnected. Reconnecting...", "error");
+        setTimeout(connectWs, 3000);
+    };
+    
+    ws.onerror = (err) => {
+        console.error("WebSocket error:", err);
+    };
 }
 
 // --- Event Listeners ---
@@ -630,5 +658,5 @@ giantBeerContainer.addEventListener('click', () => {
 
 // --- Initialization ---
 initSpinnerTrack();
-startVercelEngine();
+connectWs();
 

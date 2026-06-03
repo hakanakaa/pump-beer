@@ -1,15 +1,18 @@
 {
   "name": "pump-beer",
   "version": "1.0.0",
-  "description": "Pump.beer Serverless Vercel Build",
+  "description": "Pump.beer Server (Render.com Deployment)",
   "scripts": {
-    "dev": "vercel dev"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
     "@solana/web3.js": "^1.95.3",
-    "@vercel/kv": "^3.0.0",
     "bs58": "^6.0.0",
-    "dotenv": "^16.4.5"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
   },
   "author": "Antigravity",
   "license": "ISC"
